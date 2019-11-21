@@ -218,11 +218,10 @@ function fillIncidentsObject(object, rows, limit){
 
 
 app.put('/new-incident',(req, res)=>{
-	console.log(req.body);
 	var case_number = req.body.case_number;
+	console.log(req.body.case_number);
 	var date_time = req.body.date + "T" + req.body.time;
 	db.all("SELECT * FROM Incidents ORDER BY case_number", function(err, rows){	
-		var count = 0;
 		var match = false;
 		for(var i = 0; i < rows.length; i++){
 			if(rows[count].case_number == case_number){
@@ -235,6 +234,7 @@ app.put('/new-incident',(req, res)=>{
 		}
 		else{
 			let result = [
+				case_number,
 				date_time,
 				req.body.block,
 				req.body.incident,
@@ -242,8 +242,10 @@ app.put('/new-incident',(req, res)=>{
 				req.body.police_grid,
 				req.body.neighborhood_number
 			];
-			db.run("INSERT INTO Incidents VALUES(?, ?, ?, ?, ?, ?, ?, ?)", result, (err, rows) => {
-				if(err){ res.write('Error inerting new incident'); }
+			db.run("INSERT INTO Incidents VALUES( ?, ?, ?, ?, ?, ?, ?)", result, (err, rows) => {
+				if(err){
+					console.log(date_time); 
+					res.write('Error inerting new incident'); }
 				else{
 					res.status(200).send("success");	
 				}	
