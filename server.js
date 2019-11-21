@@ -10,7 +10,7 @@ var sqlite3 = require('sqlite3')
 var db_filename = path.join(__dirname, 'db', 'stpaul_crime.sqlite3');
 
 var app = express();
-var port = 8000;
+var port = 8001;
 
 //open St. Paul crimes database
 var db = new sqlite3.Database(db_filename, (err) => {
